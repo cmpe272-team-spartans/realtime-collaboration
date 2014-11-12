@@ -1,0 +1,10 @@
+extends layout
+block content
+    p
+        div.col-sm-9
+            input.btn(type="button",value="Brown",onclick="btnBrown()")
+            input.btn(type="button",value="Yellow",onclick="btnYellow()")
+            input.form-control(type="hidden",value="#000000", id="colHidden")
+    article
+//    canvas(id="draw", resize="true")
+//    script(type="text/paperscript", src="javascripts/draw.js", canvas="draw")
