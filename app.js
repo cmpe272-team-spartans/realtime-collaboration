@@ -53,6 +53,7 @@ io.sockets.on('connection', function (socket) {
         type: data.type,
         color:data.color
       });
+      console.log(data);
     });
   
     // (2): The server recieves a ping event
