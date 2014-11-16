@@ -8,7 +8,7 @@ var routes = require('./routes');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
-
+var nicknames=[];
 var app = express();
 
 var port = 3000;
@@ -46,35 +46,42 @@ app.get('/users', user.list);
 
 io.sockets.on('connection', function (socket) {
 
+    // server receives drawClick request which in turn sends data to all the other client sockets not including itself
     socket.on('drawClick', function(data) {
       socket.broadcast.emit('draw', {
         x: data.x,
         y: data.y,
         type: data.type,
         color:data.color
-      });
+      });0
       console.log(data);
     });
   
     // (2): The server recieves a ping event
     // from the browser on this socket
-    socket.on('ping', function ( data ) {
-  
-    console.log('socket: server recieves ping (2)');
-
-    // (3): Return a pong event to the browser
-    // echoing back the data from the ping event 
-    socket.emit( 'pong', data );   
-
-    console.log('socket: server sends pong (3)');
-
+    socket.on('ping', function ( data ) {  
+      console.log('socket: server recieves ping (2)');
+      // (3): Return a pong event to the browser
+      // echoing back the data from the ping event 
+      socket.emit( 'pong', data );   
+      console.log('socket: server sends pong (3)');
     });
-//     io.on( 'drawCircle', function( data ) {
-//     console.log( 'drawCircle event recieved:', data );
-// })
-//     socket.on( 'drawCircle', function( data) {
-// // 	socket.broadcast.emit( 'drawCircle', data );
-//  	io.sockets.emit( 'drawCircle', data );
-//     console.log( data );
-// })
+    // server gets new user request and checks if there is in the array(nicknames). if present then return, else
+    // update nicknames array and send the updated user to client sockets including itself. 
+    socket.on('new user', function(data, callback){
+      if (nicknames.indexOf(data) != -1){
+        callback(false);
+      } else{
+        callback(true);
+        socket.nickname = data;
+        nicknames.push(socket.nickname);
+        io.sockets.emit('usernames', nicknames);
+      }
+    });
+
+    // Server receives send message request which in turn emits data to all the client sockets including itself.
+    socket.on('send message', function(data){
+      console.log(data);
+        io.sockets.emit('new message', {msg:data, nickname:socket.nickname});
+    });
 });

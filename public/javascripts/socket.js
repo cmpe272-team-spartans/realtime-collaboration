@@ -18,3 +18,4 @@ io.on('error', function (reason){
 io.on('connect', function (){
 	console.info('successfully established a working and authorized connection');
 });
+

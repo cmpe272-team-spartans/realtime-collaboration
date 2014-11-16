@@ -1,10 +1,26 @@
 extends layout
 block content
-    p
-        div.col-sm-9
+    div
+        div
             input.form-control(type="hidden",value="#000000", id="colHidden")
-            input(type="text",id="colorpicker")
+            p.col-sm-8 Select the color        
+                input(type="text",id="colorpicker")
 
-    article
-//    canvas(id="draw", resize="true")
-//    script(type="text/paperscript", src="javascripts/draw.js", canvas="draw")
+        div
+            article
+                canvas( resize="true",id="mainCanvas",style='border: 1px solid #ccc')
+             p Chat here
+        div(id='nickWrap')
+            p(id='nickError')
+            form.form-inline(id="nickForm")
+                input.form-control(id='chat-name',type='text',placeholder='Enter your name')
+                input.btn.btn-default(type='submit',value='Submit')
+            
+        div(id='contentWrap',style='display:none;')
+            div(id='chatWrap')    
+                div(id='chatWindow',style='border:1px solid #ccc;height:350px')
+                form(id="chatForm")
+                    div.form-group
+                        textarea.form-control(id='message',rows='4',placeholder='Type your message')
+                        input.btn.btn-default(type='submit',value='Send')
+            div(id='users')
