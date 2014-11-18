@@ -3,24 +3,28 @@ block content
     div
         div
             input.form-control(type="hidden",value="#000000", id="colHidden")
-            p.col-sm-8 Select the color        
+            p.col-sm-8 
+                b
+                    |Select the color        
                 input(type="text",id="colorpicker")
 
         div
             article
                 canvas( resize="true",id="mainCanvas",style='border: 1px solid #ccc')
-             p Chat here
+        p 
+            b
+                |Chat here
         div(id='nickWrap')
             p(id='nickError')
             form.form-inline(id="nickForm")
                 input.form-control(id='chat-name',type='text',placeholder='Enter your name')
                 input.btn.btn-default(type='submit',value='Submit')
             
-        div(id='contentWrap',style='display:none;')
-            div(id='chatWrap')    
+        div.row(id='contentWrap',style='display:none;')
+            div.col-sm-8(id='chatWrap')
                 div(id='chatWindow',style='border:1px solid #ccc;height:350px')
                 form(id="chatForm")
                     div.form-group
-                        textarea.form-control(id='message',rows='4',placeholder='Type your message')
+                        textarea.form-control(id='message',rows='4',placeholder='Type your message',style='resize:none')
                         input.btn.btn-default(type='submit',value='Send')
-            div(id='users')
+            div.col-sm-4(id='users')

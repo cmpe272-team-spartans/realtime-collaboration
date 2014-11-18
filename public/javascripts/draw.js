@@ -62,6 +62,9 @@ function colorPicker() {
 
   App.init = function() {
 //    App.canvas = document.createElement('canvas');
+    App.socket = io.connect('http://localhost:3000');
+
+/*************************************CANVAS FUNCTIONALITY***********************************/
     App.canvas = $("#mainCanvas").get(0);
     console.log(App.canvas);
 //    App.canvas.id="mainCanvas";
@@ -73,7 +76,6 @@ function colorPicker() {
     App.ctx.strokeStyle = "#000000";
     App.ctx.lineWidth = 5;
     App.ctx.lineCap = "round";
-    App.socket = io.connect('http://localhost:3000');
     App.socket.on('draw', function(data) {
       console.log(data);
       return App.draw(data.x, data.y, data.type, data.color);
@@ -97,17 +99,21 @@ function colorPicker() {
         return App.ctx.closePath();
       }
     };
+/*************************************END OF CANVAS FUNCTIONALITY***********************************/
+
+/*************************************CHAT FUNCTIONALITY***********************************/    
     var $chatForm = $('#chatForm');
     var $messageBox = $('#message');
     var $chatWindow = $('#chatWindow');
     var $nickForm = $('#nickForm');
     var $nickError = $('#nickError');
-    var $chatName = $('#chat-name');
+    var $userName = $('#chat-name');
     var $users = $('#users');
-    // Called when Nickname is submitted
+
+    // Called when Username is submitted
     $nickForm.submit(function(e){
       e.preventDefault();
-      App.socket.emit('new user', $chatName.val(), function(data){
+      App.socket.emit('new user', $userName.val(), function(data){
         if(data){
           $('#nickWrap').hide();
           $('#contentWrap').show();
@@ -115,30 +121,40 @@ function colorPicker() {
           $nickError.html('That username is already taken!  Try again.');
         }
       });
-      $chatName.val('');
+      $userName.val('');
     });
-    // Event handler on getting nicknames from the server to display users
+
+    // Event handler on getting nickname from the server to display users
     App.socket.on('usernames', function(data){
-        var html = '';
+        var html = '<b>Users</b><br/>';
         for(i=0; i < data.length; i++){
           html += data[i] + '<br/>'
         }
         $users.html(html);
     });
-    // Submit the chat message to main chat
+
+    // Submit the chat message to main chat(private and public)
     $chatForm.submit(function(e){
       e.preventDefault();
-      App.socket.emit('send message', $messageBox.val());
+      App.socket.emit('send message', $messageBox.val(), function(data){
+          $chatWindow.append('<span class="error">' + data + "</span><br/>"); //called only when there is an error callback passed
+        });
       $messageBox.val('');
     });
     // Event handler on getting the new message
     App.socket.on('new message', function(data){
-      $chatWindow.append('<b>'+data.nickname+' : </b>'+data.msg + "<br/>");
+      $chatWindow.append('<span class="msg"><b>' + data.nickname + ': </b>' + data.msg + "</span><br/>");
     });
-  };
+    // Event handler on getting the new private message
+    App.socket.on('whisper', function(data){
+      $chatWindow.append('<span class="whisper"><b>' + data.nickname + ': </b>' + data.msg + "</span><br/>");
+    });
+/*************************************END OF CHAT FUNCTIONALITY***********************************/
+}; // End of App.init()
   /*
   	Draw Events
   */
+/*************************************CANVAS FUNCTIONALITY***********************************/
   $('canvas').live('drag dragstart dragend', function(e) {
     var offset, type, x, y;
     type = e.handleObj.type;
@@ -161,6 +177,7 @@ function colorPicker() {
     return App.init();
   });
 }).call(this);
+/*************************************END OF CANVAS FUNCTIONALITY***********************************/
 
 
 
