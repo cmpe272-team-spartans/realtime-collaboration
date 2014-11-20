@@ -114,22 +114,9 @@ io.sockets.on('connection', function (socket) {
       io.sockets.emit('usernames', Object.keys(users)); //nicknames
     }
 
-<<<<<<< Updated upstream
     socket.on('disconnect', function(data){
     if(!socket.nickname) return;
     delete users[socket.nickname];
     updateNicknames();
   });
 });
-=======
-    });
-//     io.on( 'drawCircle', function( data ) {
-//     console.log( 'drawCircle event recieved:', data );
-// })
-//     socket.on( 'drawCircle', function( data) {
-// // 	socket.broadcast.emit( 'drawCircle', data );
-//  	io.sockets.emit( 'drawCircle', data );
-//     console.log( data );
-// })
-});
->>>>>>> Stashed changes
