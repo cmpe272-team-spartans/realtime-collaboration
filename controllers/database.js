@@ -1,3 +1,7 @@
+/**
+ * Created by Yudong Yi on 11/25/14.
+ */
+ 
 var Room = require('../models/room.js');
 module.exports = {
 	findRoom: function(jsondata, callback){

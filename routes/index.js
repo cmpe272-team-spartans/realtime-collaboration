@@ -16,7 +16,7 @@ router.post('/room', function (req, res) {
 	var roomNumber = db.findRoom(jsondata, function(err,room){
 		if(err) res.send("db error");
 		else if (room == null) res.send("Can't find the room");
-		else res.render('room', {title:'Room:'+jsondata.roomNumber});
+		else res.render('room', {title:'Room:'+jsondata.roomNumber,roomNumber:jsondata.roomNumber});
 	});
 });
 

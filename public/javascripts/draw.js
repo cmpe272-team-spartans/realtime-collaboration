@@ -80,6 +80,7 @@ function colorPicker() {
     App.ctx.strokeStyle = "#000000";
     App.ctx.lineWidth = 5;
     App.ctx.lineCap = "round";
+
     App.socket.on('draw', function(data) {
       console.log(data);
       return App.draw(data.x, data.y, data.type, data.color);
@@ -111,25 +112,34 @@ function colorPicker() {
     var $chatWindow = $('#chatWindow');
     var $nickForm = $('#nickForm');
     var $nickError = $('#nickError');
-    var $userName = $('#chat-name');
+    var $nickName = $('#nickName');
+    var $roomNumber = $('#roomNumber');
     var $users = $('#users');
-
-    // Called when Username is submitted
+    // Called when nickName is submitted
     $nickForm.submit(function(e){
       e.preventDefault();
-      App.socket.emit('new user', $userName.val(), function(data){
+      
+      App.socket.roomNumber = $roomNumber.val();
+      App.socket.nickName = $nickName.val();
+
+      var user = {
+        nickName : App.socket.nickName,
+        roomNumber : App.socket.roomNumber
+      };
+      console.log(user);
+      App.socket.emit('new user', user, function(data){
         if(data){
           $('#nickWrap').hide();
           $('#contentWrap').show();
         } else{
-          $nickError.html('That username is already taken!  Try again.');
+          $nickError.html('That nickName is already taken!  Try again.');
         }
       });
-      $userName.val('');
+      $nickName.val('');
     });
 
     // Event handler on getting nickname from the server to display users
-    App.socket.on('usernames', function(data){
+    App.socket.on('nicknames', function(data){
         var html = '<b>Users</b><br/>';
         for(i=0; i < data.length; i++){
           html += data[i] + '<br/>'
@@ -140,6 +150,7 @@ function colorPicker() {
     // Submit the chat message to main chat(private and public)
     $chatForm.submit(function(e){
       e.preventDefault();
+
       App.socket.emit('send message', $messageBox.val(), function(data){
           $chatWindow.append('<span class="error">' + data + "</span><br/>"); //called only when there is an error callback passed
         });
@@ -183,6 +194,8 @@ function colorPicker() {
 
     App.draw(x, y, type);
     var data = {
+        roomNumber:App.socket.roomNumber,
+        nickName:App.socket.nickName,
         x: x,
         y: y,
         type: type,

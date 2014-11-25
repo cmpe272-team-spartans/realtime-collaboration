@@ -1,3 +1,7 @@
+/**
+ * Created by Yudong Yi on 11/25/14.
+ */
+ 
 var mongoose = require('mongoose')
     ,Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId
