@@ -9,9 +9,23 @@ var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 
-//Database
+//MongoDB setup
+var mongoUrl;
+if(process && process.env && process.env.VCAP_SERVICES) {
+  var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
+  for (var svcName in vcapServices) {
+    if (svcName.match(/^mongo.*/)) {
+      mongoUrl = vcapServices[svcName][0].credentials.uri;
+      mongoUrl = mongoUrl || vcapServices[svcName][0].credentials.url;
+      break;
+    }
+  }
+} else {
+  mongoUrl = "localhost/rtcb";
+}
+//Mongoose setup
 var mongoose = require("mongoose");
-var dbConnection = mongoose.connect("mongodb://localhost/rtcb");
+var dbConnection = mongoose.connect("mongodb://"+mongoUrl);
 autoIncrement = require('mongoose-auto-increment');
 autoIncrement.initialize(dbConnection);
 

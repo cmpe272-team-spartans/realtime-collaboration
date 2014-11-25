@@ -4,10 +4,10 @@
         <head>
                     <title><%=title%></title>
             <link href="/stylesheets/style.css" rel="stylesheet"/>
-            <link href="/stylesheets/bootstrap.min.css" rel="stylesheet"/>
-             <link href="/bower_components/spectrum/spectrum.css" rel="stylesheet" />
+            <link href="/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+            <link href="/bower_components/spectrum/spectrum.css" rel="stylesheet" />
             <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>  
-            <script type="text/javascript" src="javascripts/jquery.event.drag-2.0.js"></script>
+            <script type="text/javascript" src="/javascripts/jquery.event.drag-2.0.js"></script>
             <script type="text/javascript" src="/socket.io/socket.io.js"></script>
             <script type="text/javascript" src="/javascripts/socket.js"></script>
             <script type="text/javascript" src="javascripts/draw.js"></script>
@@ -17,6 +17,7 @@
          </head>
     <body>
         <div>
+            <H1> Room Number:  <%=roomNumber%></H1>
             <div id="nickWrap">
                 <p id="nickError">
                 </p>
@@ -33,7 +34,7 @@
                     <div>
                         <input class="form-control" type="hidden" value="#000000" id="colHidden"/>
                         <p class="col-sm-8"> 
-                            <b> Select the color </b>
+            
                             <input type="text"id="colorpicker" />
                         </p>
                     </div>
