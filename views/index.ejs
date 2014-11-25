@@ -1,62 +1,7 @@
-
-
-    <html>
-        <head>
-                    <title><%=title%></title>
-            <link href="/stylesheets/style.css" rel="stylesheet"/>
-            <link href="/stylesheets/bootstrap.min.css" rel="stylesheet"/>
-             <link href="/bower_components/spectrum/spectrum.css" rel="stylesheet" />
-            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>  
-            <script type="text/javascript" src="javascripts/jquery.event.drag-2.0.js"></script>
-            <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-            <script type="text/javascript" src="/javascripts/socket.js"></script>
-            <script type="text/javascript" src="javascripts/draw.js"></script>
-            <script type="text/javascript" src="/javascripts/paper-full.min.js"></script>
-            <script type="text/javascript" src="/bower_components/spectrum/spectrum.js"></script>
- 
-         </head>
-    <body>
-        <div>
-            <div>
-                <input class="form-control" type="hidden" value="#000000" id="colHidden"/>
-                <p class="col-sm-8"> 
-                    <b> Select the color </b>
-                    <input type="text"id="colorpicker" />
-                </p>
-            </div>
-
-            <div>
-                <article>
-                    <canvas resize="true" id="mainCanvas" style='border: 1px solid #ccc'>
-                </article>
-            </div>
-            <p> 
-                <b>Chat here</b>
-            </p>
             <div id="nickWrap">
-                <p id="nickError">
-                </p>
-                <form class="form-inline" id="nickForm">
-                    <input class="form-control" id = "chat-name" type = "text" placeholder="Enter your name" />
-                    <input class="btn btn-default" type="submit" value="Submit" />
+                <form class="form-inline" action="/room" method="post">
+                    <input class="form-control" type = "text" name = "roomNumber" placeholder="Enter the room number" />
+                    <input class="form-control" type = "password" name = "password" placeholder="Enter the password" />
+                    <button type="submit" class="btn btn-warning btn-lg">Login</button>
                 </form>
             </div>
-                
-            <div class="row" id="contentWrap" style="display:none;">
-                <div class="col-sm-8" id ="chatWrap">
-                    <div id="chatWindow" style ="border:1px solid #ccc;height:350px;">
-                    </div>
-                    <form id ="chatForm">
-                        <div class="form-group">
-                            <textarea class="form-control" id="message" rows=4 placeholder="Type your message" style="resize:none;"></textarea>
-                            <input class="btn btn-default" type="submit" value="Send"/>
-                        </div>
-                    </form>                    
-                </div>
-                <div class="col-sm-4" id="users">
-                </div>
-            </div>
-        </div>
-
-    </body>
-</html>

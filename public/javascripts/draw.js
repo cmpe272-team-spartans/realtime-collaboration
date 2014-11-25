@@ -155,6 +155,8 @@ function colorPicker() {
     });
 /*************************************END OF CHAT FUNCTIONALITY***********************************/
 }; // End of App.init()
+
+
   /*
   	Draw Events
   */

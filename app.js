@@ -4,44 +4,44 @@
  */
 
 var express = require('express');
-var routes = require('./routes');
-var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
-var users={}; // object storing nickname as key and socket as value
-var app = express();
+var logger = require('morgan');
+var bodyParser = require('body-parser');
 
-// http configuration
+//Database
+var mongoose = require("mongoose");
+var dbConnection = mongoose.connect("mongodb://localhost/rtcb");
+autoIncrement = require('mongoose-auto-increment');
+autoIncrement.initialize(dbConnection);
+
+var routes = require('./routes/index');
+var app = express();
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+app.use(logger('dev'));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use('/', routes);
 app.set('port', process.env.PORT || 3000);
 var port = app.get('port');
+
+// http configuration
 var server = http.createServer(app).listen( port );
   var io = require('socket.io').listen(server, function() {
     console.log("Express server listening on port " + port);
 });
 
-app.set('views', path.join(__dirname, 'views'));
-//app.set('view engine', 'jade');
-app.set('view engine', 'ejs');
-app.use(express.cookieParser());
-app.use(express.session({secret: '1234567890QWERTY'}));
-app.use(express.favicon());
-app.use(express.logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(express.methodOverride());
-app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
+//Redis
+// var redis = require("redis"),
+//     redisClient = redis.createClient();
+// redisClient.on("error", function (err) {
+//     console.log("Error " + err);
+// });
 
-// development only
-if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
-}
-
-app.get('/', routes.index);
-app.get('/users', user.list);
-
+//Socket.io
 io.sockets.on('connection', function (socket) {
-    console.log(socket);
+   // console.log(socket);
     // server receives drawClick request which in turn sends data to all the other client sockets not including itself
     socket.on('drawClick', function(data) {
       socket.broadcast.emit('draw', {
@@ -65,6 +65,8 @@ io.sockets.on('connection', function (socket) {
     // server gets new user request and checks if there is in the object users. if present then return false means user already present
     //, else update users obj, which contains nickname as key and socket as its value,
     // and send the updated user to client sockets including itself. 
+    var users={}; // object storing nickname as key and socket as value
+
     socket.on('new user', function(data, callback){
       if (data in users){
         callback(false); // if data is in users, then already exists
@@ -117,3 +119,32 @@ io.sockets.on('connection', function (socket) {
     updateNicknames();
   });
 });
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
+// development only
+if ('development' == app.get('env')) {
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
+    });
+}
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
+});
+
+module.exports = app;
+
