@@ -61,13 +61,17 @@ function colorPicker() {
   */
 
   App.init = function() {
-//    App.canvas = document.createElement('canvas');
+    //Bind touch event listener
+    document.addEventListener("touchstart");
+    document.addEventListener("touchmove");
+    document.addEventListener("touchend");
+    document.addEventListener("touchcancel");    
+
     App.socket = io.connect('http://localhost:3000');
 
 /*************************************CANVAS FUNCTIONALITY***********************************/
     App.canvas = $("#mainCanvas").get(0);
     console.log(App.canvas);
-//    App.canvas.id="mainCanvas";
     App.canvas.height = 480;
     App.canvas.width = 1200;
     document.getElementsByTagName('article')[0].appendChild(App.canvas);
@@ -155,9 +159,20 @@ function colorPicker() {
   	Draw Events
   */
 /*************************************CANVAS FUNCTIONALITY***********************************/
-  $('canvas').live('drag dragstart dragend', function(e) {
+  $('canvas').live('touchstart touchmove touchend drag dragstart dragend', function(e) {
+
+    e.preventDefault();
     var offset, type, x, y;
-    type = e.handleObj.type;
+
+    //Map touch events to mouse events
+    switch(e.type)
+    {
+        case "touchstart": type = "dragstart"; break;
+        case "touchmove":  type="drag"; break;        
+        case "touchend":   type="dragend"; break;
+        default: type = e.handleObj.type;
+    }
+    
     x = e.pageX - this.offsetLeft;
     y = e.pageY - this.offsetTop;
 
@@ -177,6 +192,7 @@ function colorPicker() {
     return App.init();
   });
 }).call(this);
+
 /*************************************END OF CANVAS FUNCTIONALITY***********************************/
 
 
