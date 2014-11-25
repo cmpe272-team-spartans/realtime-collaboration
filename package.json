@@ -8,5 +8,6 @@
   "dependencies": {
     "ejs": "^1.0.0",
     "express": "3.4.8",
+    "socket.io": "^1.2.0"
   }
 }

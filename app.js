@@ -11,9 +11,14 @@ var path = require('path');
 var users={}; // object storing nickname as key and socket as value
 var app = express();
 
-var port = 3000;
-// all environments
+// http configuration
 app.set('port', process.env.PORT || 3000);
+var port = app.get('port');
+var server = http.createServer(app).listen( port );
+  var io = require('socket.io').listen(server, function() {
+    console.log("Express server listening on port " + port);
+});
+
 app.set('views', path.join(__dirname, 'views'));
 //app.set('view engine', 'jade');
 app.set('view engine', 'ejs');
@@ -32,20 +37,8 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-var io = require('socket.io').listen(app.listen(port));
 app.get('/', routes.index);
 app.get('/users', user.list);
-
-//var server = http.createServer(app).listen( app.get('port') );
-// var io = require('socket.io').listen(server, function() {
-//         console.log("Express server listening on port " + app.get('port'));
-// });
-
-//http.createServer(app).listen(app.get('port'), function(){
- // console.log('Express server listening on port ' + app.get('port'));
-//});
-// A user connects to the server (opens a socket)
-
 
 io.sockets.on('connection', function (socket) {
     console.log(socket);
