@@ -61,13 +61,17 @@ function colorPicker() {
   */
 
   App.init = function() {
-//    App.canvas = document.createElement('canvas');
+    //Bind touch event listener
+    document.addEventListener("touchstart");
+    document.addEventListener("touchmove");
+    document.addEventListener("touchend");
+    document.addEventListener("touchcancel");    
+
     App.socket = io.connect('http://localhost:3000');
 
 /*************************************CANVAS FUNCTIONALITY***********************************/
     App.canvas = $("#mainCanvas").get(0);
     console.log(App.canvas);
-//    App.canvas.id="mainCanvas";
     App.canvas.height = 480;
     App.canvas.width = 1200;
     document.getElementsByTagName('article')[0].appendChild(App.canvas);
@@ -76,6 +80,7 @@ function colorPicker() {
     App.ctx.strokeStyle = "#000000";
     App.ctx.lineWidth = 5;
     App.ctx.lineCap = "round";
+
     App.socket.on('draw', function(data) {
       console.log(data);
       return App.draw(data.x, data.y, data.type, data.color);
@@ -107,25 +112,34 @@ function colorPicker() {
     var $chatWindow = $('#chatWindow');
     var $nickForm = $('#nickForm');
     var $nickError = $('#nickError');
-    var $userName = $('#chat-name');
+    var $nickName = $('#nickName');
+    var $roomNumber = $('#roomNumber');
     var $users = $('#users');
-
-    // Called when Username is submitted
+    // Called when nickName is submitted
     $nickForm.submit(function(e){
       e.preventDefault();
-      App.socket.emit('new user', $userName.val(), function(data){
+      
+      App.socket.roomNumber = $roomNumber.val();
+      App.socket.nickName = $nickName.val();
+
+      var user = {
+        nickName : App.socket.nickName,
+        roomNumber : App.socket.roomNumber
+      };
+      console.log(user);
+      App.socket.emit('new user', user, function(data){
         if(data){
           $('#nickWrap').hide();
           $('#contentWrap').show();
         } else{
-          $nickError.html('That username is already taken!  Try again.');
+          $nickError.html('That nickName is already taken!  Try again.');
         }
       });
-      $userName.val('');
+      $nickName.val('');
     });
 
     // Event handler on getting nickname from the server to display users
-    App.socket.on('usernames', function(data){
+    App.socket.on('nicknames', function(data){
         var html = '<b>Users</b><br/>';
         for(i=0; i < data.length; i++){
           html += data[i] + '<br/>'
@@ -136,6 +150,7 @@ function colorPicker() {
     // Submit the chat message to main chat(private and public)
     $chatForm.submit(function(e){
       e.preventDefault();
+
       App.socket.emit('send message', $messageBox.val(), function(data){
           $chatWindow.append('<span class="error">' + data + "</span><br/>"); //called only when there is an error callback passed
         });
@@ -151,13 +166,26 @@ function colorPicker() {
     });
 /*************************************END OF CHAT FUNCTIONALITY***********************************/
 }; // End of App.init()
+
+
   /*
   	Draw Events
   */
 /*************************************CANVAS FUNCTIONALITY***********************************/
-  $('canvas').live('drag dragstart dragend', function(e) {
+  $('canvas').live('touchstart touchmove touchend drag dragstart dragend', function(e) {
+
+    e.preventDefault();
     var offset, type, x, y;
-    type = e.handleObj.type;
+
+    //Map touch events to mouse events
+    switch(e.type)
+    {
+        case "touchstart": type = "dragstart"; break;
+        case "touchmove":  type="drag"; break;        
+        case "touchend":   type="dragend"; break;
+        default: type = e.handleObj.type;
+    }
+    
     x = e.pageX - this.offsetLeft;
     y = e.pageY - this.offsetTop;
 
@@ -166,6 +194,8 @@ function colorPicker() {
 
     App.draw(x, y, type);
     var data = {
+        roomNumber:App.socket.roomNumber,
+        nickName:App.socket.nickName,
         x: x,
         y: y,
         type: type,
@@ -177,6 +207,7 @@ function colorPicker() {
     return App.init();
   });
 }).call(this);
+
 /*************************************END OF CANVAS FUNCTIONALITY***********************************/
 
 
