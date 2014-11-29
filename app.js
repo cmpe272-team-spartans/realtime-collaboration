@@ -37,6 +37,7 @@ app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use('/', routes);
+
 app.set('port', process.env.PORT || 3000);
 var port = app.get('port');
 var rooms={}; // object storing nickname as key and socket as value

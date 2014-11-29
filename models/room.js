@@ -9,7 +9,7 @@ var mongoose = require('mongoose')
 
 
 var roomSchema = new Schema({
-	roomNumber: String,
+	roomNumber: Number,
     topic: String,
     password: String
 });

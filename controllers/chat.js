@@ -10,7 +10,6 @@ exports.init = function(socket, rooms){
     // and send the updated user to client sockets including itself. 
 
     socket.on('new user', function(data, callback){
-      console.log(data);
 
       //Make sure the room object is initialized
       if( rooms[data.roomNumber]==undefined) rooms[data.roomNumber] = {};
@@ -22,6 +21,7 @@ exports.init = function(socket, rooms){
         socket.nickname = data.nickName.toLowerCase();
         socket.roomNumber = data.roomNumber;
         rooms[data.roomNumber][socket.nickname] = socket; // saving nickname as key and save socket against them in users obj
+        
         updateNicknames(data.roomNumber);
       }
     });

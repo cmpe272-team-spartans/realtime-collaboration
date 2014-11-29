@@ -1,4 +1,4 @@
-
+var leftChat = true;
 function colorPicker() {
 
   $("#colorpicker").spectrum({
@@ -73,7 +73,7 @@ function colorPicker() {
     App.canvas = $("#mainCanvas").get(0);
     console.log(App.canvas);
     App.canvas.height = 480;
-    App.canvas.width = 1200;
+    App.canvas.width = 700;
     document.getElementsByTagName('article')[0].appendChild(App.canvas);
     App.ctx = App.canvas.getContext("2d");
     App.ctx.fillStyle = "solid";
@@ -82,7 +82,7 @@ function colorPicker() {
     App.ctx.lineCap = "round";
 
     App.socket.on('draw', function(data) {
-      console.log(data);
+
       return App.draw(data.x, data.y, data.type, data.color);
     });
     
@@ -126,11 +126,12 @@ function colorPicker() {
         nickName : App.socket.nickName,
         roomNumber : App.socket.roomNumber
       };
-      console.log(user);
+
       App.socket.emit('new user', user, function(data){
         if(data){
           $('#nickWrap').hide();
-          $('#contentWrap').show();
+          $('#chatWrap').show();
+          $('#page-wrapper').show();
         } else{
           $nickError.html('That nickName is already taken!  Try again.');
         }
@@ -150,7 +151,6 @@ function colorPicker() {
     // Submit the chat message to main chat(private and public)
     $chatForm.submit(function(e){
       e.preventDefault();
-
       App.socket.emit('send message', $messageBox.val(), function(data){
           $chatWindow.append('<span class="error">' + data + "</span><br/>"); //called only when there is an error callback passed
         });
@@ -158,7 +158,18 @@ function colorPicker() {
     });
     // Event handler on getting the new message
     App.socket.on('new message', function(data){
-      $chatWindow.append('<span class="msg"><b>' + data.nickname + ': </b>' + data.msg + "</span><br/>");
+//      $chatWindow.append('<span class="msg"><b>' + data.nickname + ': </b>' + data.msg + "</span><br/>");
+      
+if(leftChat === true) {
+    $chatWindow.append('<li class="left clearfix"><span class="chat-img pull-left"><img src="/images/dummy.jpg" alt="User Avatar" class="img-circle" /></span><div class="chat-body clearfix"><div class="header"><strong class="primary-font">'+data.nickname+'</strong></div><p>'+data.msg+'</p></div></li>');
+    leftChat = false;
+  } else {
+    $chatWindow.append('<li class="right clearfix"><span class="chat-img pull-right"><img src="/images/dummy.jpg" alt="User Avatar" class="img-circle" /></span><div class="chat-body clearfix"><div class="header"><strong class="pull-right primary-font">'+data.nickname+'</strong></div><p>'+data.msg+'</p></div></li>');
+    leftChat = true;
+  }
+
+
+
     });
     // Event handler on getting the new private message
     App.socket.on('whisper', function(data){
@@ -173,8 +184,8 @@ function colorPicker() {
   */
 /*************************************CANVAS FUNCTIONALITY***********************************/
   $('canvas').live('touchstart touchmove touchend drag dragstart dragend', function(e) {
-
-    e.preventDefault();
+//$(document).on('touchstart touchmove touchend drag dragstart dragend', 'canvas', function(){
+//    e.preventDefault();
     var offset, type, x, y;
 
     //Map touch events to mouse events

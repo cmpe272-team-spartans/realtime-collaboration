@@ -11,7 +11,7 @@ module.exports = {
 		});
 	},	
 	createRoom: function(jsondata, callback){
-    new Room(jsondata).save(function(err, room){
+    	new Room(jsondata).save(function(err, room){
             if (err) callback(err);
             else callback(null, room);
         });

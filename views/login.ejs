@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <title>Real Time Chat</title>
+        <script src="/bower_components/jquery/dist/jquery.js"></script>
+        <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="/bower_components/js/metisMenu.min.js"></script>
+        <script src="/bower_components/js/sb-admin-2.js"></script>
+        <link href="/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+        <link href="/stylesheets/metisMenu.min.css" rel="stylesheet" />
+        <link href="/stylesheets/sb-admin-2.css" rel="stylesheet" />
+        <link href="/stylesheets/font-awesome.min.css" rel="stylesheet" />
+    </head>
+
+    <body style="background-image: url(/html5up-big-picture/images/fulls/intro1.jpg);">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="login-panel panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Please Enter the Room Number</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form class="form-inline" action="/room" method="post">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input class="form-control" placeholder="Room No" type = "text" name="roomNumber"  autofocus>
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                    </div>
+    <!--                                <div class="checkbox">
+                                        <label>
+                                            <input name="remember" type="checkbox" value="Remember Me">Remember Me
+                                        </label>
+                                    </div>
+                                    <a href="index.html" class="btn btn-lg btn-success btn-block" style="background-color:#666054;border-color:#696351">Login</a>-->
+
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-default btn-success" style="background-color:#666054;border-color:#696351">Enter</button>
+                                    </div>
+                                    <div class="form-group">                    
+                                        <a href="/createRoom">Create a Room</a>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>
