@@ -14,8 +14,7 @@ exports.init = function(socket,rooms) {
                     type: data.type,
                     color:data.color
                   };
-      utils.broadCastInRoom(rooms, socket.roomNumber,'draw',data);
-
+      utils.broadCastInRoom(rooms, socket.roomNumber,'draw',data);    
       //The following code will broadcast message to all connected clients
       // socket.broadcast.emit('draw', {
       //   x: data.x,
@@ -24,4 +23,9 @@ exports.init = function(socket,rooms) {
       //   color:data.color
       // });
     });
+    socket.on('clearCanvas', function(data) {
+      console.log('clearCanvas')
+      utils.broadCastInRoom(rooms, socket.roomNumber,'clearCanvas',null)
+    });
+
 }

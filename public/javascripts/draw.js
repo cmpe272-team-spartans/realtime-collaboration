@@ -1,4 +1,11 @@
 var leftChat = true;
+function clearCanvas() {
+  var App={};
+  App.socket = io.connect('http://localhost:3000');
+  var context = $("#mainCanvas").get(0).getContext("2d");
+  context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+  App.socket.emit('clearCanvas');
+}
 function colorPicker() {
 
   $("#colorpicker").spectrum({
@@ -85,7 +92,11 @@ function colorPicker() {
 
       return App.draw(data.x, data.y, data.type, data.color);
     });
-    
+    App.socket.on('clearCanvas', function(data) {
+        var context = $("#mainCanvas").get(0).getContext("2d");
+        context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+
+    });
     //Initialize color picker
     colorPicker();
 
