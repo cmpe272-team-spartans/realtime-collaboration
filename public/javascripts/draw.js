@@ -139,12 +139,15 @@ function colorPicker() {
       };
 
       App.socket.emit('new user', user, function(data){
-        if(data){
+        $nickError.html('');
+        if(data == 'NoError'){
           $('#nickWrap').hide();
           $('#chatWrap').show();
           $('#page-wrapper').show();
-        } else{
+        } else if(data == "UserExists"){
           $nickError.html('That nickName is already taken!  Try again.');
+        } else {
+          $nickError.html('Please Enter a valid nickName! Try again.');
         }
       });
       $nickName.val('');

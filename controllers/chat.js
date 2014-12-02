@@ -13,11 +13,12 @@ exports.init = function(socket, rooms){
 
       //Make sure the room object is initialized
       if( rooms[data.roomNumber]==undefined) rooms[data.roomNumber] = {};
-
       if (data.nickName in rooms[data.roomNumber]){
-        callback(false); // if data is in users, then already exists
+        callback("UserExists"); // if data is in users, then already exists
+      } else if(data.nickName.trim() =='') {
+        callback("NoNick");
       } else{
-        callback(true);
+        callback("NoError");
         socket.nickname = data.nickName.toLowerCase();
         socket.roomNumber = data.roomNumber;
         rooms[data.roomNumber][socket.nickname] = socket; // saving nickname as key and save socket against them in users obj
