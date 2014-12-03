@@ -1,7 +1,7 @@
 var leftChat = true;
 function clearCanvas() {
   var App={};
-  App.socket = io.connect('http://localhost:3000');
+  App.socket = io.connect('/');
   var context = $("#mainCanvas").get(0).getContext("2d");
   context.clearRect(0, 0, context.canvas.width, context.canvas.height);
   App.socket.emit('clearCanvas');
@@ -199,7 +199,7 @@ if(leftChat === true) {
 /*************************************CANVAS FUNCTIONALITY***********************************/
   $('canvas').live('touchstart touchmove touchend drag dragstart dragend', function(e) {
 //$(document).on('touchstart touchmove touchend drag dragstart dragend', 'canvas', function(){
-//    e.preventDefault();
+    e.preventDefault();
     var offset, type, x, y;
 
     //Map touch events to mouse events
