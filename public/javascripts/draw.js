@@ -74,7 +74,7 @@ function colorPicker() {
     document.addEventListener("touchend");
     document.addEventListener("touchcancel");    
 
-    App.socket = io.connect('http://localhost:3000');
+    App.socket = io.connect('/');
 
 /*************************************CANVAS FUNCTIONALITY***********************************/
     App.canvas = $("#mainCanvas").get(0);
@@ -137,7 +137,7 @@ function colorPicker() {
         nickName : App.socket.nickName,
         roomNumber : App.socket.roomNumber
       };
-
+      console.log(App.socket);
       App.socket.emit('new user', user, function(data){
         $nickError.html('');
         if(data == 'NoError'){
