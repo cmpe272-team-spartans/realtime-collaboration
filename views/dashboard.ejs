@@ -31,23 +31,23 @@
 <body>
 
     <div id="wrapper">
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0;background:#101010;opacity:0.9;border-color:#080808;">
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0;background:#243F28;opacity:0.9;border-color:#080808;">
             <div class="navbar-header">
-                <p class="navbar-brand" style="color:white;">Real Time Collaboration</p>
+                <p class="navbar-brand" style="color:lightgrey;align:center;font-family:new century schoolbook;font-size:150%;">Real Time Collaboration</p>
             </div>
             <div class="nav pull-right ">
                 <p class="navbar-brand" style="color:white;">
-                <a class = "btn" href="/showLogin" style="color:white;">Logout</a>
+                <a class = "btn" href="/showLogin" style="color:lightgrey;font-family:new century schoolbook;font-size:90%;">Logout</a>
                 </p>
             </div>
-
+            
         </nav>
             <div class="sidebar">            
                 <div id="nickWrap" >
                     <p id="nickError"></p>
                     <form class="form-inline" id="nickForm">
                         <input class="form-control" id = "nickName" type = "text" placeholder="Enter your name" />
-                        <button class="btn btn-default" type="submit" value="Submit" >Submit</button>
+                        <button class="btn btn-8 btn-8c" type="submit" value="Submit" >Submit</button>
                         <input class="form-control" id = "roomNumber" type = "hidden" value="<%=roomNumber%>" />
                     </form>
                 </div>
@@ -56,7 +56,7 @@
 
 
                 <div class="chat-panel panel panel-default" id="chatWrap" style="display:none;">
-                    <div class="panel-heading" style="border-color:#d58512;background-color:#ec971f;color:#fff">
+                    <div class="panel-heading" style="border-color:#d58512;background-color:#2BC0A4;color:#fff">
                         <i class="fa fa-comments fa-fw"></i>
                         Chat
                         <div class="pull-right">Room Number: <%=roomNumber%></div>
@@ -72,7 +72,7 @@
                             <div class="input-group">
                                 <input  type="text" id="message" class="form-control input-sm" placeholder="Type your message here..." />
                                 <span class="input-group-btn">
-                                    <button type = 'submit' class="btn btn-warning btn-sm" id="btn-chat">
+                                    <button class="btn btn-8 btn-8c" type = 'submit' class="btn btn-warning btn-sm" id="btn-chat" style="border-color:#d58512;background-color:#2BC0A4;color:lightgrey">
                                         Send
                                     </button>
                                 </span>
@@ -87,9 +87,9 @@
             </div>
 
         <div id="page-wrapper"  style="display:none;">
-            <div class="row" style="border-color:#d58512;background-color:#ec971f;color:#fff">
+            <div class="row" style="border-color:#d58512;background-color:#2BC0A4;color:#fff;font-family:new century schoolbook;font-size:150%;">
                 <div class="col-lg-12">
-                    <h1 class="panel-heading">Canvas</h1>
+                    <h1 class="panel-heading"><center><i>Canvas</i></center></h1>
                 </div>
 
             </div>
@@ -100,9 +100,10 @@
                 <div>
                     <div>
                         <input class="form-control" type="hidden" value="#000000" id="colHidden"/>
-                        <p class="col-sm-8"> 
+                        <p class="col-sm-8" style="font-family:new century schoolbook"> 
                            Select Color:  <input type="text"id="colorpicker" />
-                           <input type='button' value ="Clear" onclick=clearCanvas(); />
+                           <!-- <button class="btn btn-1 btn-1a" onclick=clearCanvas();>Clear</button> -->
+                           <input class="btn btn-8 btn-8c" type='button' value ="Clear" onclick=clearCanvas(); />
                         </p>
                     </div>
                     <div>
@@ -465,7 +466,7 @@
 -->            
         </div>
     </div>
-
+   
 </body>
 
 </html>
