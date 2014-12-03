@@ -7,14 +7,14 @@ var utils = require("../utils/utils.js")
 exports.init = function(socket,rooms) {
   // console.log(socket);
   // server receives drawClick request which in turn sends data to all the other client sockets not including itself
-    socket.on('drawClick', function(data) {
+    socket.on('drawClick', function(inData) {
       var data = {
-                    x: data.x,
-                    y: data.y,
-                    type: data.type,
-                    color:data.color
+                    x: inData.x,
+                    y: inData.y,
+                    type: inData.type,
+                    color:inData.color
                   };
-      utils.broadCastInRoom(rooms, socket.roomNumber,'draw',data);    
+      utils.broadCastInRoomExcludeUser(rooms, socket.roomNumber, inData.nickName, 'draw',data);    
       //The following code will broadcast message to all connected clients
       // socket.broadcast.emit('draw', {
       //   x: data.x,

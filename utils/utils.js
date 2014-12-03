@@ -10,3 +10,11 @@ exports.broadCastInRoom = function(rooms, roomNumber, signal, data){
 	    rooms[roomNumber][user].emit(signal, data);
 	  }
 }
+
+exports.broadCastInRoomExcludeUser = function(rooms, roomNumber, aUser, signal, data){
+	  for(user in rooms[roomNumber])
+	  {
+	  	if(user != aUser)
+	    	rooms[roomNumber][user].emit(signal, data);
+	  }
+}
