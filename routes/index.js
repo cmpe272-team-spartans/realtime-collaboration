@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var db = require('../controllers/database.js');
 var md5 = require('MD5');
+var nodemailer = require("nodemailer");
 
 router.get('/', function (req, res) {
     res.render('main', { title: 'Welcome'});
@@ -45,5 +46,31 @@ router.post('/createRoom', function (req, res) {
 	else
 		res.send("Missing required information");
 });
+router.post('/email', function (req, res) {
+	var smtpTransport = nodemailer.createTransport("SMTP",{
+	    service: "Gmail",
+	    auth: {
+	       user: "cmpe272r@gmail.com",
+	       pass: "rranjanr"
+	    },
+	    debug: true
+    });
+	smtpTransport.sendMail({
+	   from: req.body.name, // sender address
+	   to: "cmpe272r@gmail.com", // comma separated list of receivers
+	   subject: "Contact Us ", // Subject line
+	   text: "Hello, I am "+req.body.email+", "+req.body.message // plaintext body
+		}, function(error, response){
+		   if(error){
+		       console.log(error);
+		   }else{
+res.writeHead(302, {
+  'Location': '/'
 
+});
+res.end();		       console.log("Message sent: " + response.message);
+		   }
+	});
+});
 module.exports = router;
+
