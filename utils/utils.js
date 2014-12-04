@@ -14,7 +14,9 @@ exports.broadCastInRoom = function(rooms, roomNumber, signal, data){
 exports.broadCastInRoomExcludeUser = function(rooms, roomNumber, aUser, signal, data){
 	  for(user in rooms[roomNumber])
 	  {
-	  	if(user != aUser)
+	  	if(user.toLowerCase() != aUser.toLowerCase())
 	    	rooms[roomNumber][user].emit(signal, data);
+	    else
+	    	console.log(aUser);
 	  }
 }
